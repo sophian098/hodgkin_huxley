@@ -4,15 +4,27 @@
 const X_TICKS = [0, 10, 20, 30, 40, 50]
 
 export function renderVoltageChart(data) {
+  const volts = data.voltage.filter(Number.isFinite)
+  const vMin = volts.length ? Math.min(...volts) : -90
+  const vMax = volts.length ? Math.max(...volts) : 120
+  const pad = Math.max((vMax - vMin) * 0.1, 8)
+
+  let yMin = -90
+  let yMax = 120
+  if (vMin < yMin) yMin = Math.floor(vMin - pad)
+  if (vMax > yMax) yMax = Math.ceil(vMax + pad)
+
+  const yTicks = buildTicks(yMin, yMax, 6)
+
   return renderChart({
     width: 820,
     height: 420,
     margin: { top: 24, right: 22, bottom: 52, left: 74 },
     time: data.time,
     xDomain: [0, lastTime(data.time)],
-    yDomain: [-90, 120],
+    yDomain: [yMin, yMax],
     xTicks: X_TICKS,
-    yTicks: [-90, -55, -35, 0, 20, 60, 110],
+    yTicks,
     series: [{ values: data.voltage, color: "#4568db" }],
     xLabel: "Time (ms)",
     yLabel: "V (mV)",
