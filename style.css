@@ -451,6 +451,12 @@ input[type="range"] {
   stroke-dasharray: 5 5;
 }
 
+.chart-resting {
+  stroke: #56a35a;
+  stroke-width: 1;
+  stroke-dasharray: 3 4;
+}
+
 .chart-line {
   fill: none;
   stroke-linecap: round;
@@ -496,9 +502,23 @@ input[type="range"] {
 }
 
 .chart-legend-swatch-threshold {
-  background: transparent;
-  border-top: 2px dashed #dd8d85;
-  height: 0;
+  height: 2px;
+  border-radius: 0;
+  background: repeating-linear-gradient(
+    90deg,
+    #dd8d85 0 6px,
+    transparent 6px 10px
+  );
+}
+
+.chart-legend-swatch-resting {
+  height: 2px;
+  border-radius: 0;
+  background: repeating-linear-gradient(
+    90deg,
+    #56a35a 0 5px,
+    transparent 5px 9px
+  );
 }
 
 /* Responsive */

@@ -31,9 +31,11 @@ export function renderVoltageChart(data) {
     ariaLabel: "Voltage over time",
     zeroLine: true,
     thresholdLine: -55,
+    restingLine: -65,
     legend: `
       <span class="chart-legend-item"><span class="chart-legend-swatch" style="background:#4568db"></span>V (mV)</span>
       <span class="chart-legend-item chart-legend-threshold"><span class="chart-legend-swatch chart-legend-swatch-threshold"></span>Threshold (-55 mV)</span>
+      <span class="chart-legend-item chart-legend-resting"><span class="chart-legend-swatch chart-legend-swatch-resting"></span>Resting (-65 mV)</span>
     `,
     legendPosition: "bottom",
     legendClass: "chart-legend-voltage",
@@ -101,7 +103,7 @@ function renderChart(opts) {
     yTickFormat = (v) => String(v),
     series,
     xLabel, yLabel, ariaLabel,
-    zeroLine = false, thresholdLine = null,
+    zeroLine = false, thresholdLine = null, restingLine = null,
     legend = "", legendPosition = "top", legendClass = "",
   } = opts
 
@@ -126,6 +128,9 @@ function renderChart(opts) {
   const threshold = thresholdLine != null
     ? hLine(margin.left, width - margin.right, y(thresholdLine), "chart-threshold")
     : ""
+  const resting = restingLine != null
+    ? hLine(margin.left, width - margin.right, y(restingLine), "chart-resting")
+    : ""
 
   const axes =
     vLine(margin.left, margin.top, height - margin.bottom, "chart-axis") +
@@ -149,7 +154,7 @@ function renderChart(opts) {
   const svg = `
 <svg viewBox="0 0 ${width} ${height}" class="chart-svg" role="img" aria-label="${ariaLabel}">
   ${gridX}${gridY}
-  ${zero}${threshold}
+  ${zero}${threshold}${resting}
   ${axes}
   ${paths}
   ${tickLabelsX}${tickLabelsY}
