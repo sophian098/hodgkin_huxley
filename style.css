@@ -43,12 +43,6 @@ input[type="range"] {
   accent-color: #3676e0;
 }
 
-/* Page shell */
-
-.page-shell {
-  min-height: 100vh;
-}
-
 .topbar {
   background: var(--panel);
   border-bottom: 1px solid var(--border);
