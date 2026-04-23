@@ -1,27 +1,30 @@
 # Neural Signal Visualizer
 
-A tiny Hodgkin-Huxley action-potential explorer. Plain HTML + CSS + JavaScript,
-no build step and no dependencies.
+A small Hodgkin-Huxley action potential visualizer built with HTML, CSS,
+and JavaScript.
 
-## Files
+Adjust the inputs and watch the neuron’s voltage, ion gates, and currents change over time.
 
-- `index.html` - markup + controls
-- `style.css` - all styles
-- `js/main.js` - wires DOM inputs to the simulation and re-renders on change
-- `js/hh.js` - Hodgkin-Huxley simulation (forward Euler)
-- `js/charts.js` - SVG chart renderers (voltage, gating, currents)
+## Run
 
-## Run it
-
-ES modules require an HTTP server (opening `index.html` via `file://` will not
-load the scripts). Any static server works. A couple of options:
+Because the app uses ES modules, open it through a local server:
 
 ```bash
-# Python (comes with most systems)
-python -m http.server 8000
-
-# Node (no install, just npx)
 npx http-server -p 8000
 ```
 
-Then open http://localhost:8000 in a browser.
+Then visit http://localhost:8000.
+
+If you prefer python:
+
+```bash
+python -m http.server 8000
+```
+
+## What is inside
+
+- `index.html` has the page and controls
+- `style.css` has the styling
+- `js/hh.js` runs the Hodgkin-Huxley simulation
+- `js/charts.js` draws the SVG charts
+- `js/main.js` connects the controls to the simulation
