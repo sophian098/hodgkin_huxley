@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="./style.css" />
   </head>
   <body>
-    <main class="page-shell">
+    <main>
       <header class="topbar">
         <div class="container">
           <h1>Neural Signal Visualizer</h1>
@@ -74,19 +74,19 @@
         </section>
 
         <section class="phase-grid">
-          <article class="phase-card" id="phase-card-0">
+          <article class="phase-card">
             <h3>Resting</h3>
             <p>-65 mV at rest. Na+/K+ pumps maintain gradient.</p>
           </article>
-          <article class="phase-card" id="phase-card-1">
+          <article class="phase-card">
             <h3>Depolarization</h3>
             <p>Na+ channels open, voltage rises rapidly.</p>
           </article>
-          <article class="phase-card" id="phase-card-2">
+          <article class="phase-card">
             <h3>Repolarization</h3>
             <p>K+ channels open, voltage falls back.</p>
           </article>
-          <article class="phase-card" id="phase-card-3">
+          <article class="phase-card">
             <h3>Refractory</h3>
             <p>Briefly unable to fire again (K+ overshoot).</p>
           </article>
@@ -120,7 +120,7 @@
             <div class="equation-block">
               <h3>Membrane Potential Dynamics</h3>
               <div class="formula-card formula-card-wide">
-                <i>dV/dt</i> = (1/C<sub>m</sub>) · [I - g<sub>Na</sub>m<sup>3</sup>h(V -
+                <i>dV/dt</i> = (1/C<sub>m</sub>) &middot; [I - g<sub>Na</sub>m<sup>3</sup>h(V -
                 E<sub>Na</sub>) - g<sub>K</sub>n<sup>4</sup>(V - E<sub>K</sub>) -
                 g<sub>L</sub>(V - E<sub>L</sub>)]
               </div>
@@ -132,19 +132,19 @@
                 <div class="formula-card">
                   <span class="formula-label">Potassium (n)</span>
                   <div class="formula-text">
-                    <i>dn/dt</i> = α<sub>n</sub>(V)(1-n) - β<sub>n</sub>(V)n
+                    <i>dn/dt</i> = &alpha;<sub>n</sub>(V)(1-n) - &beta;<sub>n</sub>(V)n
                   </div>
                 </div>
                 <div class="formula-card">
                   <span class="formula-label">Sodium activation (m)</span>
                   <div class="formula-text">
-                    <i>dm/dt</i> = α<sub>m</sub>(V)(1-m) - β<sub>m</sub>(V)m
+                    <i>dm/dt</i> = &alpha;<sub>m</sub>(V)(1-m) - &beta;<sub>m</sub>(V)m
                   </div>
                 </div>
                 <div class="formula-card">
                   <span class="formula-label">Sodium inactivation (h)</span>
                   <div class="formula-text">
-                    <i>dh/dt</i> = α<sub>h</sub>(V)(1-h) - β<sub>h</sub>(V)h
+                    <i>dh/dt</i> = &alpha;<sub>h</sub>(V)(1-h) - &beta;<sub>h</sub>(V)h
                   </div>
                 </div>
               </div>
@@ -154,22 +154,22 @@
               <h3>Rate Functions</h3>
               <div class="formula-grid formula-grid-2">
                 <div class="formula-card">
-                  <div class="formula-text">α<sub>n</sub> = 0.01(V+55) / [1 - exp(-(V+55)/10)]</div>
+                  <div class="formula-text">&alpha;<sub>n</sub> = 0.01(V+55) / [1 - exp(-(V+55)/10)]</div>
                 </div>
                 <div class="formula-card">
-                  <div class="formula-text">β<sub>n</sub> = 0.125 · exp(-(V+65)/80)</div>
+                  <div class="formula-text">&beta;<sub>n</sub> = 0.125 &middot; exp(-(V+65)/80)</div>
                 </div>
                 <div class="formula-card">
-                  <div class="formula-text">α<sub>m</sub> = 0.1(V+40) / [1 - exp(-(V+40)/10)]</div>
+                  <div class="formula-text">&alpha;<sub>m</sub> = 0.1(V+40) / [1 - exp(-(V+40)/10)]</div>
                 </div>
                 <div class="formula-card">
-                  <div class="formula-text">β<sub>m</sub> = 4.0 · exp(-(V+65)/18)</div>
+                  <div class="formula-text">&beta;<sub>m</sub> = 4.0 &middot; exp(-(V+65)/18)</div>
                 </div>
                 <div class="formula-card">
-                  <div class="formula-text">α<sub>h</sub> = 0.07 · exp(-(V+65)/20)</div>
+                  <div class="formula-text">&alpha;<sub>h</sub> = 0.07 &middot; exp(-(V+65)/20)</div>
                 </div>
                 <div class="formula-card">
-                  <div class="formula-text">β<sub>h</sub> = 1 / [1 + exp(-(V+35)/10)]</div>
+                  <div class="formula-text">&beta;<sub>h</sub> = 1 / [1 + exp(-(V+35)/10)]</div>
                 </div>
               </div>
             </div>
@@ -210,7 +210,7 @@
               <article class="interpret-card">
                 <div class="interpret-accent" style="background: #3676e0"></div>
                 <div class="interpret-body">
-                  <h3>dV/dt <span>— Membrane Potential Change</span></h3>
+                  <h3>dV/dt <span>&mdash; Membrane Potential Change</span></h3>
                   <p>
                     Describes how the membrane voltage changes over time as a function of applied
                     current and the three ionic currents (Na+, K+, leak). The capacitive membrane
@@ -222,7 +222,7 @@
               <article class="interpret-card">
                 <div class="interpret-accent" style="background: #4c983f"></div>
                 <div class="interpret-body">
-                  <h3>I<sub>K</sub> <span>— Potassium Current</span></h3>
+                  <h3>I<sub>K</sub> <span>&mdash; Potassium Current</span></h3>
                   <p>
                     Potassium conductance as a function of membrane voltage. The n^4 term
                     represents four identical activation gates that must all be open for K+ to flow.
@@ -231,7 +231,7 @@
                   </p>
                   <div class="interpret-note">
                     <strong>n:</strong>
-                    K+ activation gate (x4) — opens slowly with depolarization, closes slowly
+                    K+ activation gate (x4) &mdash; opens slowly with depolarization, closes slowly
                   </div>
                 </div>
               </article>
@@ -239,7 +239,7 @@
               <article class="interpret-card">
                 <div class="interpret-accent" style="background: #d8433b"></div>
                 <div class="interpret-body">
-                  <h3>I<sub>Na</sub> <span>— Sodium Current</span></h3>
+                  <h3>I<sub>Na</sub> <span>&mdash; Sodium Current</span></h3>
                   <p>
                     Sodium conductance controlled by two distinct gates. The m^3h term reflects three
                     activation gates (m) and one inactivation gate (h). Na+ influx causes the rapid
@@ -247,17 +247,17 @@
                   </p>
                   <div class="interpret-note">
                     <strong>m:</strong>
-                    Na+ activation gate (x3) — opens rapidly in response to voltage increase
+                    Na+ activation gate (x3) &mdash; opens rapidly in response to voltage increase
                   </div>
                   <div class="interpret-note">
                     <strong>h:</strong>
-                    Na+ inactivation gate (x1) — closes with sustained depolarization
+                    Na+ inactivation gate (x1) &mdash; closes with sustained depolarization
                   </div>
                 </div>
               </article>
 
               <div class="threshold-card">
-                <strong>Threshold: ≈ -55 mV.</strong> Below this, the stimulus is subthreshold and
+                <strong>Threshold: &asymp; -55 mV.</strong> Below this, the stimulus is subthreshold and
                 no action potential occurs. Once threshold is reached, a full spike is generated
                 (all-or-none).
               </div>
