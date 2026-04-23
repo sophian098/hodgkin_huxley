@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Neural Signal Visualizer</title>
+    <meta name="description" content="Simple Hodgkin-Huxley model explorer" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <main class="page-shell">
+      <header class="topbar">
+        <div class="container">
+          <h1>Neural Signal Visualizer</h1>
+          <span class="topbar-subtitle">Hodgkin-Huxley Model (1952)</span>
+        </div>
+      </header>
+
+      <div class="container content-stack">
+        <section class="panel hero-panel">
+          <div class="hero-chart">
+            <div class="hero-chart-header">
+              <h2 id="hero-status">Action potential fired</h2>
+              <p id="hero-subtitle">Spikes detected - Hodgkin-Huxley model</p>
+            </div>
+            <div class="hero-chart-body" id="voltage-chart-root"></div>
+          </div>
+
+          <aside class="control-panel">
+            <label class="slider-field">
+              <div class="slider-head">
+                <span class="slider-label">Stimulus (I)</span>
+                <span class="slider-value" id="value-stimulus">15.0</span>
+              </div>
+              <input id="input-stimulus" type="range" min="0" max="50" step="0.5" value="15" />
+              <span class="slider-unit">uA/cm^2</span>
+            </label>
+
+            <label class="slider-field">
+              <div class="slider-head">
+                <span class="slider-label">Duration</span>
+                <span class="slider-value" id="value-duration">5.0</span>
+              </div>
+              <input id="input-duration" type="range" min="0.5" max="20" step="0.5" value="5" />
+              <span class="slider-unit">ms</span>
+            </label>
+
+            <div class="slider-group-header">Conductances</div>
+
+            <label class="slider-field">
+              <div class="slider-head">
+                <span class="slider-label">G Na</span>
+                <span class="slider-value" id="value-gna">1.20</span>
+              </div>
+              <input id="input-gna" type="range" min="0" max="3" step="0.01" value="1.2" />
+              <span class="slider-unit">mS/cm^2</span>
+            </label>
+
+            <label class="slider-field">
+              <div class="slider-head">
+                <span class="slider-label">G K</span>
+                <span class="slider-value" id="value-gk">0.36</span>
+              </div>
+              <input id="input-gk" type="range" min="0" max="1" step="0.01" value="0.36" />
+              <span class="slider-unit">mS/cm^2</span>
+            </label>
+          </aside>
+        </section>
+
+        <section class="phase-grid">
+          <article class="phase-card" id="phase-card-0">
+            <h3>Resting</h3>
+            <p>-65 mV at rest. Na+/K+ pumps maintain gradient.</p>
+          </article>
+          <article class="phase-card" id="phase-card-1">
+            <h3>Depolarization</h3>
+            <p>Na+ channels open, voltage rises rapidly.</p>
+          </article>
+          <article class="phase-card" id="phase-card-2">
+            <h3>Repolarization</h3>
+            <p>K+ channels open, voltage falls back.</p>
+          </article>
+          <article class="phase-card" id="phase-card-3">
+            <h3>Refractory</h3>
+            <p>Briefly unable to fire again (K+ overshoot).</p>
+          </article>
+        </section>
+
+        <section class="panel chart-grid">
+          <article>
+            <div class="panel-header">
+              <h2>Gating Variables - N, M, H</h2>
+              <p>Probability of channel gates being open</p>
+            </div>
+            <div class="chart-panel-body" id="gating-chart-root"></div>
+          </article>
+
+          <article class="chart-panel-right">
+            <div class="panel-header">
+              <h2>Ionic Currents - I_Na, I_K</h2>
+              <p>Current flow through ion channels</p>
+            </div>
+            <div class="chart-panel-body" id="current-chart-root"></div>
+          </article>
+        </section>
+
+        <section class="panel constants-panel">
+          <div class="panel-header">
+            <h2>Hodgkin-Huxley Model Equations</h2>
+            <p>Mathematical framework for action potential generation</p>
+          </div>
+
+          <div class="panel-body">
+            <div class="equation-block">
+              <h3>Membrane Potential Dynamics</h3>
+              <div class="formula-card formula-card-wide">
+                <i>dV/dt</i> = (1/C<sub>m</sub>) · [I - g<sub>Na</sub>m<sup>3</sup>h(V -
+                E<sub>Na</sub>) - g<sub>K</sub>n<sup>4</sup>(V - E<sub>K</sub>) -
+                g<sub>L</sub>(V - E<sub>L</sub>)]
+              </div>
+            </div>
+
+            <div class="equation-block">
+              <h3>Gating Variable Dynamics</h3>
+              <div class="formula-grid formula-grid-3">
+                <div class="formula-card">
+                  <span class="formula-label">Potassium (n)</span>
+                  <div class="formula-text">
+                    <i>dn/dt</i> = α<sub>n</sub>(V)(1-n) - β<sub>n</sub>(V)n
+                  </div>
+                </div>
+                <div class="formula-card">
+                  <span class="formula-label">Sodium activation (m)</span>
+                  <div class="formula-text">
+                    <i>dm/dt</i> = α<sub>m</sub>(V)(1-m) - β<sub>m</sub>(V)m
+                  </div>
+                </div>
+                <div class="formula-card">
+                  <span class="formula-label">Sodium inactivation (h)</span>
+                  <div class="formula-text">
+                    <i>dh/dt</i> = α<sub>h</sub>(V)(1-h) - β<sub>h</sub>(V)h
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="equation-block">
+              <h3>Rate Functions</h3>
+              <div class="formula-grid formula-grid-2">
+                <div class="formula-card">
+                  <div class="formula-text">α<sub>n</sub> = 0.01(V+50) / [1 - exp(-(V+50)/10)]</div>
+                </div>
+                <div class="formula-card">
+                  <div class="formula-text">β<sub>n</sub> = 0.125 · exp(-(V+60)/80)</div>
+                </div>
+                <div class="formula-card">
+                  <div class="formula-text">α<sub>m</sub> = 0.1(V+35) / [1 - exp(-(V+35)/10)]</div>
+                </div>
+                <div class="formula-card">
+                  <div class="formula-text">β<sub>m</sub> = 4.0 · exp(-0.0556(V+60))</div>
+                </div>
+                <div class="formula-card">
+                  <div class="formula-text">α<sub>h</sub> = 0.07 · exp(-0.05(V+60))</div>
+                </div>
+                <div class="formula-card">
+                  <div class="formula-text">β<sub>h</sub> = 1 / [1 + exp(-0.1(V+30))]</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="constant-table-grid">
+              <div>
+                <h3>Model Constants</h3>
+                <div class="data-table">
+                  <div class="data-row"><span><i>C</i><sub>m</sub></span><strong>0.01 uF/cm^2</strong></div>
+                  <div class="data-row"><span><i>E</i><sub>Na</sub></span><strong>55.17 mV</strong></div>
+                  <div class="data-row"><span><i>E</i><sub>K</sub></span><strong>-72.14 mV</strong></div>
+                  <div class="data-row"><span><i>E</i><sub>L</sub></span><strong>-49.42 mV</strong></div>
+                  <div class="data-row"><span><i>g</i><sub>L</sub></span><strong>0.003 mS/cm^2</strong></div>
+                </div>
+              </div>
+
+              <div>
+                <h3>Current Parameters (user input)</h3>
+                <div class="data-table data-table-active">
+                  <div class="data-row"><span><i>I</i><sub>stim</sub></span><strong id="param-stimulus">15.0 uA/cm^2</strong></div>
+                  <div class="data-row"><span>Duration</span><strong id="param-duration">5.0 ms</strong></div>
+                  <div class="data-row"><span><i>g</i><sub>Na</sub></span><strong id="param-gna">1.20 mS/cm^2</strong></div>
+                  <div class="data-row"><span><i>g</i><sub>K</sub></span><strong id="param-gk">0.36 mS/cm^2</strong></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel constants-panel">
+          <div class="panel-header">
+            <h2>Model Interpretation</h2>
+            <p>Biological meaning of the mathematical terms</p>
+          </div>
+
+          <div class="panel-body">
+            <div class="interpretation-stack">
+              <article class="interpret-card">
+                <div class="interpret-accent" style="background: #3676e0"></div>
+                <div class="interpret-body">
+                  <h3>dV/dt <span>— Membrane Potential Change</span></h3>
+                  <p>
+                    Describes how the membrane voltage changes over time as a function of applied
+                    current and the three ionic currents (Na+, K+, leak). The capacitive membrane
+                    acts as an electrical circuit integrating all currents.
+                  </p>
+                </div>
+              </article>
+
+              <article class="interpret-card">
+                <div class="interpret-accent" style="background: #4c983f"></div>
+                <div class="interpret-body">
+                  <h3>I<sub>K</sub> <span>— Potassium Current</span></h3>
+                  <p>
+                    Potassium conductance as a function of membrane voltage. The n^4 term
+                    represents four identical activation gates that must all be open for K+ to flow.
+                    K+ current is responsible for repolarization, bringing the membrane back to
+                    resting potential.
+                  </p>
+                  <div class="interpret-note">
+                    <strong>n:</strong>
+                    K+ activation gate (x4) — opens slowly with depolarization, closes slowly
+                  </div>
+                </div>
+              </article>
+
+              <article class="interpret-card">
+                <div class="interpret-accent" style="background: #d8433b"></div>
+                <div class="interpret-body">
+                  <h3>I<sub>Na</sub> <span>— Sodium Current</span></h3>
+                  <p>
+                    Sodium conductance controlled by two distinct gates. The m^3h term reflects three
+                    activation gates (m) and one inactivation gate (h). Na+ influx causes the rapid
+                    upstroke of the action potential.
+                  </p>
+                  <div class="interpret-note">
+                    <strong>m:</strong>
+                    Na+ activation gate (x3) — opens rapidly in response to voltage increase
+                  </div>
+                  <div class="interpret-note">
+                    <strong>h:</strong>
+                    Na+ inactivation gate (x1) — closes with sustained depolarization
+                  </div>
+                </div>
+              </article>
+
+              <div class="threshold-card">
+                <strong>Threshold: ≈ -55 mV.</strong> Below this, the stimulus is subthreshold and
+                no action potential occurs. Once threshold is reached, a full spike is generated
+                (all-or-none).
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <script type="module" src="./js/main.js"></script>
+  </body>
+</html>
