@@ -56,18 +56,18 @@
             <label class="slider-field">
               <div class="slider-head">
                 <span class="slider-label">G Na</span>
-                <span class="slider-value" id="value-gna">1.20</span>
+                <span class="slider-value" id="value-gna">120</span>
               </div>
-              <input id="input-gna" type="range" min="0" max="3" step="0.01" value="1.2" />
+              <input id="input-gna" type="range" min="0" max="200" step="1" value="120" />
               <span class="slider-unit">mS/cm^2</span>
             </label>
 
             <label class="slider-field">
               <div class="slider-head">
                 <span class="slider-label">G K</span>
-                <span class="slider-value" id="value-gk">0.36</span>
+                <span class="slider-value" id="value-gk">36</span>
               </div>
-              <input id="input-gk" type="range" min="0" max="1" step="0.01" value="0.36" />
+              <input id="input-gk" type="range" min="0" max="80" step="1" value="36" />
               <span class="slider-unit">mS/cm^2</span>
             </label>
           </aside>
@@ -154,22 +154,22 @@
               <h3>Rate Functions</h3>
               <div class="formula-grid formula-grid-2">
                 <div class="formula-card">
-                  <div class="formula-text">α<sub>n</sub> = 0.01(V+50) / [1 - exp(-(V+50)/10)]</div>
+                  <div class="formula-text">α<sub>n</sub> = 0.01(V+55) / [1 - exp(-(V+55)/10)]</div>
                 </div>
                 <div class="formula-card">
-                  <div class="formula-text">β<sub>n</sub> = 0.125 · exp(-(V+60)/80)</div>
+                  <div class="formula-text">β<sub>n</sub> = 0.125 · exp(-(V+65)/80)</div>
                 </div>
                 <div class="formula-card">
-                  <div class="formula-text">α<sub>m</sub> = 0.1(V+35) / [1 - exp(-(V+35)/10)]</div>
+                  <div class="formula-text">α<sub>m</sub> = 0.1(V+40) / [1 - exp(-(V+40)/10)]</div>
                 </div>
                 <div class="formula-card">
-                  <div class="formula-text">β<sub>m</sub> = 4.0 · exp(-0.0556(V+60))</div>
+                  <div class="formula-text">β<sub>m</sub> = 4.0 · exp(-(V+65)/18)</div>
                 </div>
                 <div class="formula-card">
-                  <div class="formula-text">α<sub>h</sub> = 0.07 · exp(-0.05(V+60))</div>
+                  <div class="formula-text">α<sub>h</sub> = 0.07 · exp(-(V+65)/20)</div>
                 </div>
                 <div class="formula-card">
-                  <div class="formula-text">β<sub>h</sub> = 1 / [1 + exp(-0.1(V+30))]</div>
+                  <div class="formula-text">β<sub>h</sub> = 1 / [1 + exp(-(V+35)/10)]</div>
                 </div>
               </div>
             </div>
@@ -178,11 +178,11 @@
               <div>
                 <h3>Model Constants</h3>
                 <div class="data-table">
-                  <div class="data-row"><span><i>C</i><sub>m</sub></span><strong>0.01 uF/cm^2</strong></div>
-                  <div class="data-row"><span><i>E</i><sub>Na</sub></span><strong>55.17 mV</strong></div>
-                  <div class="data-row"><span><i>E</i><sub>K</sub></span><strong>-72.14 mV</strong></div>
-                  <div class="data-row"><span><i>E</i><sub>L</sub></span><strong>-49.42 mV</strong></div>
-                  <div class="data-row"><span><i>g</i><sub>L</sub></span><strong>0.003 mS/cm^2</strong></div>
+                  <div class="data-row"><span><i>C</i><sub>m</sub></span><strong>1.0 uF/cm^2</strong></div>
+                  <div class="data-row"><span><i>E</i><sub>Na</sub></span><strong>50 mV</strong></div>
+                  <div class="data-row"><span><i>E</i><sub>K</sub></span><strong>-77 mV</strong></div>
+                  <div class="data-row"><span><i>E</i><sub>L</sub></span><strong>-54.4 mV</strong></div>
+                  <div class="data-row"><span><i>g</i><sub>L</sub></span><strong>0.3 mS/cm^2</strong></div>
                 </div>
               </div>
 
@@ -191,8 +191,8 @@
                 <div class="data-table data-table-active">
                   <div class="data-row"><span><i>I</i><sub>stim</sub></span><strong id="param-stimulus">15.0 uA/cm^2</strong></div>
                   <div class="data-row"><span>Duration</span><strong id="param-duration">5.0 ms</strong></div>
-                  <div class="data-row"><span><i>g</i><sub>Na</sub></span><strong id="param-gna">1.20 mS/cm^2</strong></div>
-                  <div class="data-row"><span><i>g</i><sub>K</sub></span><strong id="param-gk">0.36 mS/cm^2</strong></div>
+                  <div class="data-row"><span><i>g</i><sub>Na</sub></span><strong id="param-gna">120 mS/cm^2</strong></div>
+                  <div class="data-row"><span><i>g</i><sub>K</sub></span><strong id="param-gk">36 mS/cm^2</strong></div>
                 </div>
               </div>
             </div>

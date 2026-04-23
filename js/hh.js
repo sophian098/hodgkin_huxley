@@ -2,18 +2,18 @@
 // Integrates membrane voltage and gating variables (n, m, h) with forward Euler.
 
 export const HH_CONSTANTS = {
-  Cm: 0.01,
-  ENa: 55.17,
-  EK: -72.14,
-  EL: -49.42,
-  gL: 0.003,
+  Cm: 1, // membrane capacitance
+  ENa: 50, // sodium reversal potential
+  EK: -77, // potassium reversal potential
+  EL: -54.4, // leak reversal potential
+  gL: 0.3, // leak conductance
 }
 
 export const DEFAULT_PARAMS = {
   stimulus: 15,
   duration: 5,
-  gNa: 1.2,
-  gK: 0.36,
+  gNa: 120,
+  gK: 36,
 }
 
 export function simulateHodgkinHuxley(params) {
@@ -88,12 +88,12 @@ export function simulateHodgkinHuxley(params) {
 
 // Rate functions (Hodgkin-Huxley 1952, shifted so rest = -65 mV).
 
-function alphaN(v) { return stableRate(0.01, v + 50, 10, 0.1) }
-function betaN(v)  { return 0.125 * Math.exp(-(v + 60) / 80) }
-function alphaM(v) { return stableRate(0.1, v + 35, 10, 1) }
-function betaM(v)  { return 4 * Math.exp(-0.0556 * (v + 60)) }
-function alphaH(v) { return 0.07 * Math.exp(-0.05 * (v + 60)) }
-function betaH(v)  { return 1 / (1 + Math.exp(-0.1 * (v + 30))) }
+function alphaN(v) { return stableRate(0.01, v + 55, 10, 0.1) }
+function betaN(v)  { return 0.125 * Math.exp(-(v + 65) / 80) }
+function alphaM(v) { return stableRate(0.1, v + 40, 10, 1) }
+function betaM(v)  { return 4 * Math.exp(-(v + 65) / 18) }
+function alphaH(v) { return 0.07 * Math.exp(-(v + 65) / 20) }
+function betaH(v)  { return 1 / (1 + Math.exp(-(v + 35) / 10)) }
 
 // Uses a fallback near the removable singularity where offset -> 0.
 function stableRate(scale, offset, divisor, fallback) {

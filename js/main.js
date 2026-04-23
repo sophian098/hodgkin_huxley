@@ -47,13 +47,13 @@ function readParams() {
 function updateLabels(p) {
   sliderValues.stimulus.textContent = p.stimulus.toFixed(1)
   sliderValues.duration.textContent = p.duration.toFixed(1)
-  sliderValues.gNa.textContent = p.gNa.toFixed(2)
-  sliderValues.gK.textContent = p.gK.toFixed(2)
+  sliderValues.gNa.textContent = p.gNa.toFixed(0)
+  sliderValues.gK.textContent = p.gK.toFixed(0)
 
   paramLabels.stimulus.textContent = `${p.stimulus.toFixed(1)} uA/cm^2`
   paramLabels.duration.textContent = `${p.duration.toFixed(1)} ms`
-  paramLabels.gNa.textContent = `${p.gNa.toFixed(2)} mS/cm^2`
-  paramLabels.gK.textContent = `${p.gK.toFixed(2)} mS/cm^2`
+  paramLabels.gNa.textContent = `${p.gNa.toFixed(0)} mS/cm^2`
+  paramLabels.gK.textContent = `${p.gK.toFixed(0)} mS/cm^2`
 }
 
 function render() {
