@@ -1,61 +1,55 @@
 import { simulateHodgkinHuxley } from "./hh.js"
 import { renderCurrentChart, renderGatingChart, renderVoltageChart } from "./charts.js"
 
-const $ = (id) => {
+const PARAMS = [
+  { key: "stimulus", id: "stimulus", digits: 1, unit: "uA/cm^2" },
+  { key: "duration", id: "duration", digits: 1, unit: "ms" },
+  { key: "gNa", id: "gna", digits: 0, unit: "mS/cm^2" },
+  { key: "gK", id: "gk", digits: 0, unit: "mS/cm^2" },
+]
+
+// gets an element by id and gives a clear error if it is missing
+function $(id) {
   const el = document.getElementById(id)
   if (!el) throw new Error(`Missing element: #${id}`)
   return el
 }
 
-const inputs = {
-  stimulus: $("input-stimulus"),
-  duration: $("input-duration"),
-  gNa: $("input-gna"),
-  gK: $("input-gk"),
+// gathers the repeated input/value/label elements for each parameter
+function paramElements(prefix) {
+  return Object.fromEntries(
+    PARAMS.map(({ key, id }) => [key, $(`${prefix}-${id}`)]),
+  )
 }
 
-const sliderValues = {
-  stimulus: $("value-stimulus"),
-  duration: $("value-duration"),
-  gNa: $("value-gna"),
-  gK: $("value-gk"),
-}
-
-const paramLabels = {
-  stimulus: $("param-stimulus"),
-  duration: $("param-duration"),
-  gNa: $("param-gna"),
-  gK: $("param-gk"),
-}
+const inputs = paramElements("input")
+const sliderValues = paramElements("value")
+const paramLabels = paramElements("param")
 
 const heroStatus = $("hero-status")
 const heroSubtitle = $("hero-subtitle")
 const voltageRoot = $("voltage-chart-root")
 const gatingRoot = $("gating-chart-root")
 const currentRoot = $("current-chart-root")
-const phaseCards = [0, 1, 2, 3].map((i) => $(`phase-card-${i}`))
+const phaseCards = [...document.querySelectorAll(".phase-card")]
 
+// reads the current slider values as numbers for the simulation
 function readParams() {
-  return {
-    stimulus: Number(inputs.stimulus.value),
-    duration: Number(inputs.duration.value),
-    gNa: Number(inputs.gNa.value),
-    gK: Number(inputs.gK.value),
+  return Object.fromEntries(
+    PARAMS.map(({ key }) => [key, Number(inputs[key].value)]),
+  )
+}
+
+// updates the visible slider values and parameter summary labels
+function updateLabels(p) {
+  for (const { key, digits, unit } of PARAMS) {
+    const value = p[key].toFixed(digits)
+    sliderValues[key].textContent = value
+    paramLabels[key].textContent = `${value} ${unit}`
   }
 }
 
-function updateLabels(p) {
-  sliderValues.stimulus.textContent = p.stimulus.toFixed(1)
-  sliderValues.duration.textContent = p.duration.toFixed(1)
-  sliderValues.gNa.textContent = p.gNa.toFixed(0)
-  sliderValues.gK.textContent = p.gK.toFixed(0)
-
-  paramLabels.stimulus.textContent = `${p.stimulus.toFixed(1)} uA/cm^2`
-  paramLabels.duration.textContent = `${p.duration.toFixed(1)} ms`
-  paramLabels.gNa.textContent = `${p.gNa.toFixed(0)} mS/cm^2`
-  paramLabels.gK.textContent = `${p.gK.toFixed(0)} mS/cm^2`
-}
-
+// reruns the model and redraws the UI using the current slider settings
 function render() {
   const params = readParams()
   updateLabels(params)
