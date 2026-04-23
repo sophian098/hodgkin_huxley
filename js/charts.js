@@ -2,6 +2,24 @@
 // domain/ticks/series/legend differ.
 
 const X_TICKS = [0, 10, 20, 30, 40, 50]
+const DEFAULT_TIME_MAX = 50
+
+const BASE = {
+  width: 820,
+  xTicks: X_TICKS,
+  xLabel: "Time (ms)",
+}
+
+function timeDomain(time) {
+  return [0, lastTime(time)]
+}
+
+function legendItem({ color, label, className = "", swatchClassName = "" }) {
+  const itemCls = ["chart-legend-item", className].filter(Boolean).join(" ")
+  const swatchCls = ["chart-legend-swatch", swatchClassName].filter(Boolean).join(" ")
+  const swatchStyle = color ? ` style="background:${color}"` : ""
+  return `<span class="${itemCls}"><span class="${swatchCls}"${swatchStyle}></span>${label}</span>`
+}
 
 export function renderVoltageChart(data) {
   const volts = data.voltage.filter(Number.isFinite)
@@ -17,26 +35,32 @@ export function renderVoltageChart(data) {
   const yTicks = buildTicks(yMin, yMax, 6)
 
   return renderChart({
-    width: 820,
+    ...BASE,
     height: 420,
     margin: { top: 24, right: 22, bottom: 52, left: 74 },
     time: data.time,
-    xDomain: [0, lastTime(data.time)],
+    xDomain: timeDomain(data.time),
     yDomain: [yMin, yMax],
-    xTicks: X_TICKS,
     yTicks,
     series: [{ values: data.voltage, color: "#4568db" }],
-    xLabel: "Time (ms)",
     yLabel: "V (mV)",
     ariaLabel: "Voltage over time",
     zeroLine: true,
     thresholdLine: -55,
     restingLine: -65,
-    legend: `
-      <span class="chart-legend-item"><span class="chart-legend-swatch" style="background:#4568db"></span>V (mV)</span>
-      <span class="chart-legend-item chart-legend-threshold"><span class="chart-legend-swatch chart-legend-swatch-threshold"></span>Threshold (-55 mV)</span>
-      <span class="chart-legend-item chart-legend-resting"><span class="chart-legend-swatch chart-legend-swatch-resting"></span>Resting (-65 mV)</span>
-    `,
+    legend: [
+      legendItem({ color: "#4568db", label: "V (mV)" }),
+      legendItem({
+        label: "Threshold (-55 mV)",
+        className: "chart-legend-threshold",
+        swatchClassName: "chart-legend-swatch-threshold",
+      }),
+      legendItem({
+        label: "Resting (-65 mV)",
+        className: "chart-legend-resting",
+        swatchClassName: "chart-legend-swatch-resting",
+      }),
+    ].join(""),
     legendPosition: "bottom",
     legendClass: "chart-legend-voltage",
   })
@@ -44,13 +68,12 @@ export function renderVoltageChart(data) {
 
 export function renderGatingChart(data) {
   return renderChart({
-    width: 820,
+    ...BASE,
     height: 360,
     margin: { top: 26, right: 22, bottom: 52, left: 64 },
     time: data.time,
-    xDomain: [0, lastTime(data.time)],
+    xDomain: timeDomain(data.time),
     yDomain: [0, 1],
-    xTicks: X_TICKS,
     yTicks: [0, 0.25, 0.5, 0.75, 1],
     yTickFormat: (t) => t.toFixed(2).replace(/\.00$/, ""),
     series: [
@@ -58,40 +81,37 @@ export function renderGatingChart(data) {
       { values: data.m, color: "#cb4136" },
       { values: data.h, color: "#e39a22" },
     ],
-    xLabel: "Time (ms)",
     yLabel: "Probability",
     ariaLabel: "Gating variables over time",
-    legend: `
-      <span class="chart-legend-item"><span class="chart-legend-swatch" style="background:#56a35a"></span>n (K activation)</span>
-      <span class="chart-legend-item"><span class="chart-legend-swatch" style="background:#cb4136"></span>m (Na activation)</span>
-      <span class="chart-legend-item"><span class="chart-legend-swatch" style="background:#e39a22"></span>h (Na inactivation)</span>
-    `,
+    legend: [
+      legendItem({ color: "#56a35a", label: "n (K activation)" }),
+      legendItem({ color: "#cb4136", label: "m (Na activation)" }),
+      legendItem({ color: "#e39a22", label: "h (Na inactivation)" }),
+    ].join(""),
   })
 }
 
 export function renderCurrentChart(data) {
   const [yMin, yMax] = currentDomain(data.iNa, data.iK)
   return renderChart({
-    width: 820,
+    ...BASE,
     height: 360,
     margin: { top: 26, right: 22, bottom: 52, left: 70 },
     time: data.time,
-    xDomain: [0, lastTime(data.time)],
+    xDomain: timeDomain(data.time),
     yDomain: [yMin, yMax],
-    xTicks: X_TICKS,
     yTicks: buildTicks(yMin, yMax, 5),
     series: [
       { values: data.iNa, color: "#cb4136" },
       { values: data.iK, color: "#56a35a" },
     ],
-    xLabel: "Time (ms)",
     yLabel: "I (uA/cm^2)",
     ariaLabel: "Ionic currents over time",
     zeroLine: true,
-    legend: `
-      <span class="chart-legend-item"><span class="chart-legend-swatch" style="background:#cb4136"></span>I_Na (sodium)</span>
-      <span class="chart-legend-item"><span class="chart-legend-swatch" style="background:#56a35a"></span>I_K (potassium)</span>
-    `,
+    legend: [
+      legendItem({ color: "#cb4136", label: "I_Na (sodium)" }),
+      legendItem({ color: "#56a35a", label: "I_K (potassium)" }),
+    ].join(""),
   })
 }
 
@@ -184,7 +204,7 @@ function toPath(time, values, x, y) {
 }
 
 function lastTime(time) {
-  return time.length > 0 ? time[time.length - 1] : 50
+  return time.length > 0 ? time[time.length - 1] : DEFAULT_TIME_MAX
 }
 
 function buildTicks(min, max, count) {
